@@ -4,12 +4,6 @@
 # Log file
 *.log
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
 # Package Files #
 *.jar
 *.war
@@ -19,5 +13,38 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+.classpath
+.factorypath
+.project
+target/
+
+# Eclipse metadata files that can be ignored
+.editorconfig
+.gitattributes
+.settings/
+bin/
+
+# maven project related ignore files and directories
+.mvn/
+
+# Netbeans
+**/nbproject/private/
+build/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
+
+### STS ###
+.apt_generated
+.settings
+.springBeans
+.sts4-cache
