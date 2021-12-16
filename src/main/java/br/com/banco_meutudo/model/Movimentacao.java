@@ -29,4 +29,7 @@ public class Movimentacao {
     @ManyToOne
     @JoinColumn(name = "CONTA_FK")
     private Conta conta;
+
+    @Version
+    private Long version;
 }
