@@ -9,6 +9,8 @@ import br.com.banco_meutudo.repository.MovimentacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
  * Service responsável pelas operações com Movimentação.
  */
@@ -29,20 +31,13 @@ public class MovimentacaoService {
     }
 
     /**
-     * Método responsável por salvar uma nova movimentação
-     * @param movimentacao Movimentação que será salva na base.
-     */
-    public void criar(Movimentacao movimentacao) {
-        movimentacaoRepository.save(movimentacao);
-    }
-
-    /**
      * Método responsável por criar uma nova movimentação de despesa e salvar na base.
      * @param valor Valor que será movimentado.
      * @param conta Conta onde será feita a movimentação.
      * @param tipoTransacao Tipo de transação que será feita.
      * @param transferencia Transferência que originou movimentação ou nulo caso seja outro tipo de transação.
      */
+    @Transactional
     public void criarDespesa(double valor, Conta conta, TipoTransacaoEnum tipoTransacao, Transferencia transferencia) {
         criar(-valor, conta, TipoMovimentacaoEnum.DESPESA, tipoTransacao, transferencia);
     }
@@ -54,6 +49,7 @@ public class MovimentacaoService {
      * @param tipoTransacao Tipo de transação que será feita.
      * @param transferencia Transferência que originou movimentação ou nulo caso seja outro tipo de transação.
      */
+    @Transactional
     public void criarReceita(double valor, Conta conta, TipoTransacaoEnum tipoTransacao, Transferencia transferencia) {
         criar(valor, conta, TipoMovimentacaoEnum.RECEITA, tipoTransacao, transferencia);
     }
@@ -73,7 +69,7 @@ public class MovimentacaoService {
         movimentacao.setTipo(tipo.getCodigo());
         movimentacao.setTipoTransacao(tipoTransacao.getCodigo());
         movimentacao.setTransferencia(transferencia);
-        criar(movimentacao);
+        movimentacaoRepository.save(movimentacao);
     }
 
 }
