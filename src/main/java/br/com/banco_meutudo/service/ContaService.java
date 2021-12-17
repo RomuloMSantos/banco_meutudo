@@ -33,15 +33,10 @@ public class ContaService {
      * Método responsável por consultar uma Conta usando o id.
      *
      * @param id Id que será consultado
-     * @return Conta encontrada caso exista. Será criada uma exceção caso não encontre.
+     * @return Optional contendo Conta encontrada caso exista.
      */
-    public Conta getById(long id) {
-        Optional<Conta> contaOptional = contaRepository.findById(id);
-
-        if (contaOptional.isEmpty())
-            throw new ContaNaoEncontradaException(id);
-
-        return contaOptional.get();
+    public Optional<Conta> findById(long id) {
+        return contaRepository.findById(id);
     }
 
     /**
@@ -51,7 +46,7 @@ public class ContaService {
      * @return Saldo da conta encontrada caso exista.
      */
     public Double getSaldoById(long id) {
-        Conta conta = getById(id);
+        verificaContaExiste(id);
 
         return movimentacaoService.getSomatorioByConta(id);
     }
@@ -64,7 +59,7 @@ public class ContaService {
      */
     public ContaRetornoDto getBy(ContaDto contaDto) {
         Banco banco = bancoService.getById(contaDto.getIdBanco());
-        Optional<Conta> contaOptional = contaRepository.findByAgenciaAndNumeroAndDigitoAndBancoId(contaDto.getAgencia(), contaDto.getNumero(), contaDto.getDigito(), contaDto.getIdBanco());
+        Optional<Conta> contaOptional = contaRepository.findByAgenciaAndNumeroAndDigitoAndBanco(contaDto.getAgencia(), contaDto.getNumero(), contaDto.getDigito(), banco);
 
         if (contaOptional.isEmpty())
             return null;
@@ -79,7 +74,7 @@ public class ContaService {
      * @return Lista contendo as transferências futuras da conta.
      */
     public List<TransferenciaFuturaRetornoDto> getTransferenciasFuturasById(long id) {
-        getById(id);
+        verificaContaExiste(id);
 
         return transferenciaService.getFuturasByConta(id);
     }
@@ -91,9 +86,16 @@ public class ContaService {
      * @return Lista contendo as transferências executadas da conta.
      */
     public List<TransferenciaRetornoDto> getTransferenciasById(long id) {
-        getById(id);
+        verificaContaExiste(id);
 
         return transferenciaService.getByConta(id);
+    }
+
+    private void verificaContaExiste(long id) {
+        Optional<Conta> contaOptional = contaRepository.findById(id);
+
+        if (contaOptional.isEmpty())
+            throw new ContaNaoEncontradaException(id);
     }
 
 }

@@ -41,21 +41,10 @@ public class TransferenciaService {
      */
     @Transactional
     public void criar(TransferenciaDto transferenciaDto) {
+        Conta contaOrigem = contaService.findById(transferenciaDto.getIdContaOrigem()).orElseThrow(() -> new ContaOrigemNaoEncontradaException());
+        Conta contaDestino = contaService.findById(transferenciaDto.getIdContaDestino()).orElseThrow(() -> new ContaDestinoNaoEncontradaException());
+
         validarTransferencia(transferenciaDto);
-        Conta contaOrigem;
-        Conta contaDestino;
-
-        try {
-            contaOrigem = contaService.getById(transferenciaDto.getIdContaOrigem());
-        } catch (ContaNaoEncontradaException ex) {
-            throw new ContaOrigemNaoEncontradaException(ex);
-        }
-
-        try {
-            contaDestino = contaService.getById(transferenciaDto.getIdContaDestino());
-        } catch (ContaNaoEncontradaException ex) {
-            throw new ContaDestinoNaoEncontradaException(ex);
-        }
 
         Transferencia transferencia = new Transferencia();
         transferencia.setDataTransferencia(LocalDateTime.now());
@@ -109,20 +98,8 @@ public class TransferenciaService {
      */
     @Transactional
     public void criarFutura(TransferenciaFuturaDto transferenciaFuturaDto) {
-        Conta contaOrigem;
-        Conta contaDestino;
-
-        try {
-            contaOrigem = contaService.getById(transferenciaFuturaDto.getIdContaOrigem());
-        } catch (ContaNaoEncontradaException ex) {
-            throw new ContaOrigemNaoEncontradaException(ex);
-        }
-
-        try {
-            contaDestino = contaService.getById(transferenciaFuturaDto.getIdContaDestino());
-        } catch (ContaNaoEncontradaException ex) {
-            throw new ContaDestinoNaoEncontradaException(ex);
-        }
+        Conta contaOrigem = contaService.findById(transferenciaFuturaDto.getIdContaOrigem()).orElseThrow(() -> new ContaOrigemNaoEncontradaException());
+        Conta contaDestino = contaService.findById(transferenciaFuturaDto.getIdContaDestino()).orElseThrow(() -> new ContaDestinoNaoEncontradaException());
 
         BigDecimal valorTotal = BigDecimal.valueOf(transferenciaFuturaDto.getValor());
         BigDecimal valorParcelado = valorTotal.divide(BigDecimal.valueOf(transferenciaFuturaDto.getQuantidadeParcelas()), 2, RoundingMode.DOWN);
@@ -175,6 +152,8 @@ public class TransferenciaService {
      * @param transferenciaDto Dados da transferência que será validada.
      */
     private void validarTransferencia(TransferenciaDto transferenciaDto) {
+        if (transferenciaDto.getIdContaOrigem() == transferenciaDto.getIdContaDestino())
+            throw new ContaOrigemIgualDestinoException();
         if (transferenciaDto.getValor() > contaService.getSaldoById(transferenciaDto.getIdContaOrigem()))
             throw new SaldoInsuficienteException();
     }

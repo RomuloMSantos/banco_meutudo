@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface ContaRepository extends JpaRepository<Conta, Long> {
-    Optional<Conta> findByAgenciaAndNumeroAndDigitoAndBancoId(String agencia, String numero, String digito, long id);
+    Optional<Conta> findByAgenciaAndNumeroAndDigitoAndBanco(String agencia, String numero, String digito, Banco banco);
 }
