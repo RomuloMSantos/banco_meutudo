@@ -11,6 +11,9 @@ Aplicação simulando operações bancarias para teste no processo seletivo da e
 - _H2Database_ 
 - _junit_ 
 
+### Modelo de Dados
+![](docs/ModeloDeDados.png)
+
 ### Como iniciar
 Ao executar aplicação com o Main localizado na classe src/main/java/br/com/banco_meutudo/BancoMeutudoApplication será 
 iniciado também o Swagger e criado a base de dados H2. <br/>
