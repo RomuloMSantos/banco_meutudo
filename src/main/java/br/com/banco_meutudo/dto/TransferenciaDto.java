@@ -15,7 +15,7 @@ import javax.validation.constraints.Min;
 @Setter
 public class TransferenciaDto {
 
-    @DecimalMin(value = "0.01", message = "Valor inválido!")
+    @DecimalMin(value = "0.01", message = "Valor inválido! Mínimo é R$0,01")
     private double valor;
     @Min(value = 1, message = "Conta Origem inválida!")
     private long idContaOrigem;

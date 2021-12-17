@@ -103,6 +103,10 @@ public class TransferenciaService {
 
         BigDecimal valorTotal = BigDecimal.valueOf(transferenciaFuturaDto.getValor());
         BigDecimal valorParcelado = valorTotal.divide(BigDecimal.valueOf(transferenciaFuturaDto.getQuantidadeParcelas()), 2, RoundingMode.DOWN);
+
+        if (valorParcelado.doubleValue() == 0.0)
+            throw new ValorParceladoIgualZeroException();
+
         BigDecimal totalParcelado = valorParcelado.multiply(BigDecimal.valueOf(transferenciaFuturaDto.getQuantidadeParcelas()));
 
         boolean deveAlterarValorPrimeiraParcela = valorTotal.compareTo(totalParcelado) == 1;
@@ -110,7 +114,7 @@ public class TransferenciaService {
         for(int parcela = 0; parcela < transferenciaFuturaDto.getQuantidadeParcelas(); parcela++) {
             BigDecimal valor = valorParcelado;
 
-            if (deveAlterarValorPrimeiraParcela && parcela == 0)
+            if (parcela == 0 && deveAlterarValorPrimeiraParcela)
                 valor = valor.add(valorTotal.subtract(totalParcelado));
 
             LocalDate dataTransferencia = transferenciaFuturaDto.getDataTransferencia().plusMonths(parcela);
