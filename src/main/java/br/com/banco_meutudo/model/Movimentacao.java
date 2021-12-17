@@ -17,18 +17,25 @@ public class Movimentacao {
     private Long id;
 
     @CreationTimestamp
-    @Column(name = "DATA_CRIACAO")
+    @Column(name = "DATA_CRIACAO", updatable = false, nullable = false)
     private LocalDateTime dataCriacao;
 
-    @Column(name = "TIPO")
+    @Column(name = "TIPO", updatable = false, nullable = false)
     private int tipo;
 
-    @Column(name = "VALOR")
+    @Column(name = "TIPO_TRANSACAO", updatable = false, nullable = false)
+    private int tipoTransacao;
+
+    @Column(name = "VALOR", updatable = false, nullable = false)
     private double valor;
 
     @ManyToOne
-    @JoinColumn(name = "CONTA_FK")
+    @JoinColumn(name = "CONTA_FK", updatable = false, nullable = false)
     private Conta conta;
+
+    @ManyToOne
+    @JoinColumn(name = "TRANSFERENCIA_FK", updatable = false)
+    private Transferencia transferencia;
 
     @Version
     private Long version;
