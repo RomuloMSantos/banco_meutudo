@@ -91,6 +91,10 @@ public class ContaService {
         return transferenciaService.getByConta(id);
     }
 
+    /**
+     * Método responsável por verificar se uma conta existe.
+     * @param id Id que será verificado a existência. Caso não exista irá disparar a exceção ContaNaoEncontradaException.
+     */
     private void verificaContaExiste(long id) {
         Optional<Conta> contaOptional = contaRepository.findById(id);
 
