@@ -2,14 +2,14 @@ package br.com.banco_meutudo.dto;
 
 import br.com.banco_meutudo.model.Transferencia;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
-@Setter
-@Getter
+@Data
 public class TransferenciaFuturaRetornoDto {
 
     private Long id;

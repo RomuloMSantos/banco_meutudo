@@ -2,12 +2,10 @@ package br.com.banco_meutudo.dto;
 
 import br.com.banco_meutudo.model.Conta;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class ContaRetornoDto {
 
     private long id;

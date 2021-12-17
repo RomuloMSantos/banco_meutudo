@@ -2,6 +2,7 @@ package br.com.banco_meutudo.service;
 
 import br.com.banco_meutudo.enums.TipoMovimentacaoEnum;
 import br.com.banco_meutudo.enums.TipoTransacaoEnum;
+import br.com.banco_meutudo.exception.TransferenciaNaoInformadaException;
 import br.com.banco_meutudo.model.Conta;
 import br.com.banco_meutudo.model.Movimentacao;
 import br.com.banco_meutudo.model.Transferencia;
@@ -28,6 +29,28 @@ public class MovimentacaoService {
      */
     public double getSomatorioByConta(long idConta) {
         return movimentacaoRepository.getSomatorioByConta(idConta);
+    }
+
+    /**
+     * Método responsável por criar uma nova movimentação de despesa e salvar na base.
+     * @param valor Valor que será movimentado.
+     * @param conta Conta onde será feita a movimentação.
+     * @param tipoTransacao Tipo de transação que será feita.
+     */
+    @Transactional
+    public void criarDespesa(double valor, Conta conta, TipoTransacaoEnum tipoTransacao) {
+        criar(-valor, conta, TipoMovimentacaoEnum.DESPESA, tipoTransacao, null);
+    }
+
+    /**
+     * Método responsável por criar uma nova movimentação de receita e salvar na base.
+     * @param valor Valor que será movimentado.
+     * @param conta Conta onde será feita a movimentação.
+     * @param tipoTransacao Tipo de transação que será feita.
+     */
+    @Transactional
+    public void criarReceita(double valor, Conta conta, TipoTransacaoEnum tipoTransacao) {
+        criar(valor, conta, TipoMovimentacaoEnum.RECEITA, tipoTransacao, null);
     }
 
     /**
@@ -63,6 +86,10 @@ public class MovimentacaoService {
      * @param transferencia Transferência que originou movimentação ou nulo caso seja outro tipo de transação.
      */
     private void criar(double valor, Conta conta, TipoMovimentacaoEnum tipo, TipoTransacaoEnum tipoTransacao, Transferencia transferencia) {
+
+        if ((tipoTransacao == TipoTransacaoEnum.TRANSFERENCIA || tipoTransacao == TipoTransacaoEnum.ESTORNO) && transferencia == null)
+            throw new TransferenciaNaoInformadaException();
+
         Movimentacao movimentacao = new Movimentacao();
         movimentacao.setValor(valor);
         movimentacao.setConta(conta);
