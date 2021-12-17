@@ -5,9 +5,7 @@ import br.com.banco_meutudo.dto.TransferenciaFuturaDto;
 import br.com.banco_meutudo.dto.TransferenciaFuturaRetornoDto;
 import br.com.banco_meutudo.dto.TransferenciaRetornoDto;
 import br.com.banco_meutudo.enums.TipoTransacaoEnum;
-import br.com.banco_meutudo.exception.BusinessException;
-import br.com.banco_meutudo.exception.SaldoInsuficienteException;
-import br.com.banco_meutudo.exception.TransferenciaNaoEncontradaException;
+import br.com.banco_meutudo.exception.*;
 import br.com.banco_meutudo.model.Conta;
 import br.com.banco_meutudo.model.Transferencia;
 import br.com.banco_meutudo.repository.TransferenciaRepository;
@@ -44,9 +42,20 @@ public class TransferenciaService {
     @Transactional
     public void criar(TransferenciaDto transferenciaDto) {
         validarTransferencia(transferenciaDto);
+        Conta contaOrigem;
+        Conta contaDestino;
 
-        Conta contaOrigem = contaService.getById(transferenciaDto.getIdContaOrigem());
-        Conta contaDestino = contaService.getById(transferenciaDto.getIdContaDestino());
+        try {
+            contaOrigem = contaService.getById(transferenciaDto.getIdContaOrigem());
+        } catch (ContaNaoEncontradaException ex) {
+            throw new ContaOrigemNaoEncontradaException(ex);
+        }
+
+        try {
+            contaDestino = contaService.getById(transferenciaDto.getIdContaDestino());
+        } catch (ContaNaoEncontradaException ex) {
+            throw new ContaDestinoNaoEncontradaException(ex);
+        }
 
         Transferencia transferencia = new Transferencia();
         transferencia.setDataTransferencia(LocalDateTime.now());
@@ -100,8 +109,20 @@ public class TransferenciaService {
      */
     @Transactional
     public void criarFutura(TransferenciaFuturaDto transferenciaFuturaDto) {
-        Conta contaOrigem = contaService.getById(transferenciaFuturaDto.getIdContaOrigem());
-        Conta contaDestino = contaService.getById(transferenciaFuturaDto.getIdContaDestino());
+        Conta contaOrigem;
+        Conta contaDestino;
+
+        try {
+            contaOrigem = contaService.getById(transferenciaFuturaDto.getIdContaOrigem());
+        } catch (ContaNaoEncontradaException ex) {
+            throw new ContaOrigemNaoEncontradaException(ex);
+        }
+
+        try {
+            contaDestino = contaService.getById(transferenciaFuturaDto.getIdContaDestino());
+        } catch (ContaNaoEncontradaException ex) {
+            throw new ContaDestinoNaoEncontradaException(ex);
+        }
 
         BigDecimal valorTotal = BigDecimal.valueOf(transferenciaFuturaDto.getValor());
         BigDecimal valorParcelado = valorTotal.divide(BigDecimal.valueOf(transferenciaFuturaDto.getQuantidadeParcelas()), 2, RoundingMode.DOWN);
