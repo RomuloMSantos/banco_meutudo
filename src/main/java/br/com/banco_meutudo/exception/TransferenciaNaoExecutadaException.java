@@ -2,8 +2,10 @@ package br.com.banco_meutudo.exception;
 
 public class TransferenciaNaoExecutadaException extends BusinessException {
 
+    private static String mensagemPadrao = "Transferência ainda não foi executada!";
+
     public TransferenciaNaoExecutadaException() {
-        super("Transferência ainda não foi executada!");
+        super(mensagemPadrao);
     }
 
     public TransferenciaNaoExecutadaException(String message) {
@@ -15,7 +17,7 @@ public class TransferenciaNaoExecutadaException extends BusinessException {
     }
 
     public TransferenciaNaoExecutadaException(Throwable cause) {
-        super(cause);
+        super(mensagemPadrao, cause);
     }
 
 }

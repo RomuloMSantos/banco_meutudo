@@ -2,8 +2,10 @@ package br.com.banco_meutudo.exception;
 
 public class BancoNaoEncontradoException extends BusinessException {
 
+    private static String mensagemPadrao = "Banco não encontrado.";
+
     public BancoNaoEncontradoException() {
-        super();
+        super(mensagemPadrao);
     }
 
     public BancoNaoEncontradoException(String message) {
@@ -15,7 +17,7 @@ public class BancoNaoEncontradoException extends BusinessException {
     }
 
     public BancoNaoEncontradoException(Throwable cause) {
-        super(cause);
+        super(mensagemPadrao, cause);
     }
 
     public BancoNaoEncontradoException(long id) {

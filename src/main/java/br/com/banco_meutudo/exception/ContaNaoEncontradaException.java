@@ -2,7 +2,7 @@ package br.com.banco_meutudo.exception;
 
 public class ContaNaoEncontradaException extends BusinessException {
 
-    private static String mensagemPadrao = "Conta não encontrada!";
+    private static String mensagemPadrao = "Conta não econtrada";
 
     public ContaNaoEncontradaException() {
         super(mensagemPadrao);
@@ -17,7 +17,7 @@ public class ContaNaoEncontradaException extends BusinessException {
     }
 
     public ContaNaoEncontradaException(Throwable cause) {
-        super(cause);
+        super(mensagemPadrao, cause);
     }
 
     public ContaNaoEncontradaException(long id) {

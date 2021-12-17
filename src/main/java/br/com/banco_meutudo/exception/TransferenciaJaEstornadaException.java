@@ -2,8 +2,10 @@ package br.com.banco_meutudo.exception;
 
 public class TransferenciaJaEstornadaException extends BusinessException {
 
+    private static String mensagemPadrao = "Transferência já estornada!";
+
     public TransferenciaJaEstornadaException() {
-        super("Transferência já estornada!");
+        super(mensagemPadrao);
     }
 
     public TransferenciaJaEstornadaException(String message) {
@@ -15,7 +17,7 @@ public class TransferenciaJaEstornadaException extends BusinessException {
     }
 
     public TransferenciaJaEstornadaException(Throwable cause) {
-        super(cause);
+        super(mensagemPadrao, cause);
     }
 
 }

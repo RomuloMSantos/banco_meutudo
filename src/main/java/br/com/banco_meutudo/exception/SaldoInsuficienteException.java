@@ -2,8 +2,10 @@ package br.com.banco_meutudo.exception;
 
 public class SaldoInsuficienteException extends BusinessException {
 
+    private static String mensagemPadrao = "Saldo insuficiente.";
+
     public SaldoInsuficienteException() {
-        super("Saldo insuficiente!");
+        super(mensagemPadrao);
     }
 
     public SaldoInsuficienteException(String message) {
@@ -15,7 +17,7 @@ public class SaldoInsuficienteException extends BusinessException {
     }
 
     public SaldoInsuficienteException(Throwable cause) {
-        super(cause);
+        super(mensagemPadrao, cause);
     }
 
 }

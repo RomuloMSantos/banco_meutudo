@@ -2,8 +2,10 @@ package br.com.banco_meutudo.exception;
 
 public class ContaOrigemIgualDestinoException extends BusinessException {
 
+    private static String mensagemPadrao = "Conta Origem igual a Conta Destino";
+
     public ContaOrigemIgualDestinoException() {
-        super("Conta Origem igual a Conta Destino!");
+        super(mensagemPadrao);
     }
 
     public ContaOrigemIgualDestinoException(String message) {
@@ -15,7 +17,7 @@ public class ContaOrigemIgualDestinoException extends BusinessException {
     }
 
     public ContaOrigemIgualDestinoException(Throwable cause) {
-        super(cause);
+        super(mensagemPadrao, cause);
     }
 
 }
