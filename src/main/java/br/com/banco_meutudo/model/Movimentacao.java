@@ -37,6 +37,4 @@ public class Movimentacao {
     @JoinColumn(name = "TRANSFERENCIA_FK", updatable = false)
     private Transferencia transferencia;
 
-    @Version
-    private Long version;
 }
