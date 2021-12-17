@@ -27,7 +27,7 @@ public class BancoService {
         Optional<Banco> bancoOptional = bancoRepository.findById(id);
 
         if (bancoOptional.isEmpty())
-            throw new BancoNaoEncontradoException("Banco ID: " + id + " não encontrado.");
+            throw new BancoNaoEncontradoException(id);
 
         return bancoOptional.get();
     }

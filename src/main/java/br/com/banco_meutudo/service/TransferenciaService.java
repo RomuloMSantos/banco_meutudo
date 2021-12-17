@@ -82,7 +82,7 @@ public class TransferenciaService {
         Optional<Transferencia> transferenciaOptional = transferenciaRepository.findById(id);
 
         if (transferenciaOptional.isEmpty())
-            throw new TransferenciaNaoEncontradaException("Transferência ID: " + id + " não encontrada!");
+            throw new TransferenciaNaoEncontradaException(id);
 
         Transferencia transferencia = transferenciaOptional.get();
 
@@ -176,7 +176,7 @@ public class TransferenciaService {
      */
     private void validarTransferencia(TransferenciaDto transferenciaDto) {
         if (transferenciaDto.getValor() > contaService.getSaldoById(transferenciaDto.getIdContaOrigem()))
-            throw new SaldoInsuficienteException("Saldo insuficiente!");
+            throw new SaldoInsuficienteException();
     }
 
     /**
@@ -186,12 +186,12 @@ public class TransferenciaService {
     private void validarEstornoTransferencia(Transferencia transferenciaEstornada) {
 
         if (!transferenciaEstornada.isExecutada())
-            throw new BusinessException("Transferência ainda não foi executada!");
+            throw new TransferenciaNaoExecutadaException();
 
         Optional<Transferencia> transferenciaOptional = transferenciaRepository.findByTransferenciaEstornadaId(transferenciaEstornada.getId());
 
         if (transferenciaOptional.isPresent())
-            throw new BusinessException("Transferência já estornada!");
+            throw new TransferenciaJaEstornadaException();
 
         validarTransferencia(new TransferenciaDto(transferenciaEstornada.getValor(), transferenciaEstornada.getContaDestino().getId(), transferenciaEstornada.getContaOrigem().getId() ));
     }

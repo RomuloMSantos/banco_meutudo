@@ -18,4 +18,8 @@ public class TransferenciaNaoEncontradaException extends BusinessException {
         super(cause);
     }
 
+    public TransferenciaNaoEncontradaException(long id) {
+        super("Transferência ID: " + id + " não encontrada!");
+    }
+
 }

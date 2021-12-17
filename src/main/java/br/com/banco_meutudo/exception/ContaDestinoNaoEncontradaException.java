@@ -16,6 +16,8 @@ public class ContaDestinoNaoEncontradaException extends BusinessException {
         super(message, cause);
     }
 
-    public ContaDestinoNaoEncontradaException(Throwable cause) { super(mensagemPadrao, cause); }
+    public ContaDestinoNaoEncontradaException(Throwable cause) {
+        super(mensagemPadrao, cause);
+    }
 
 }

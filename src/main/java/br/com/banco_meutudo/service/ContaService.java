@@ -39,7 +39,7 @@ public class ContaService {
         Optional<Conta> contaOptional = contaRepository.findById(id);
 
         if (contaOptional.isEmpty())
-            throw new ContaNaoEncontradaException("Conta ID " + id + " não encontrada.");
+            throw new ContaNaoEncontradaException(id);
 
         return contaOptional.get();
     }
@@ -79,7 +79,7 @@ public class ContaService {
      * @return Lista contendo as transferências futuras da conta.
      */
     public List<TransferenciaFuturaRetornoDto> getTransferenciasFuturasById(long id) {
-        Conta conta = getById(id);
+        getById(id);
 
         return transferenciaService.getFuturasByConta(id);
     }
@@ -91,7 +91,7 @@ public class ContaService {
      * @return Lista contendo as transferências executadas da conta.
      */
     public List<TransferenciaRetornoDto> getTransferenciasById(long id) {
-        Conta conta = getById(id);
+        getById(id);
 
         return transferenciaService.getByConta(id);
     }

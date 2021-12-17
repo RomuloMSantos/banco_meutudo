@@ -18,4 +18,9 @@ public class BancoNaoEncontradoException extends BusinessException {
         super(cause);
     }
 
+    public BancoNaoEncontradoException(long id) {
+        super("Banco ID: " + id + " não encontrado.");
+    }
+
+
 }
