@@ -4,6 +4,7 @@ import br.com.banco_meutudo.dto.TransferenciaDto;
 import br.com.banco_meutudo.dto.TransferenciaFuturaDto;
 import br.com.banco_meutudo.dto.TransferenciaFuturaRetornoDto;
 import br.com.banco_meutudo.dto.TransferenciaRetornoDto;
+import br.com.banco_meutudo.enums.TipoTransacaoEnum;
 import br.com.banco_meutudo.exception.BusinessException;
 import br.com.banco_meutudo.exception.SaldoInsuficienteException;
 import br.com.banco_meutudo.exception.TransferenciaNaoEncontradaException;
@@ -55,10 +56,10 @@ public class TransferenciaService {
         transferencia.setContaOrigem(contaOrigem);
         transferencia.setContaDestino(contaDestino);
 
-        transferenciaRepository.save(transferencia);
+        Transferencia transferenciaSalva = transferenciaRepository.save(transferencia);
 
-        movimentacaoService.criarDespesa(transferencia.getValor(), transferencia.getContaOrigem());
-        movimentacaoService.criarReceita(transferencia.getValor(), transferencia.getContaDestino());
+        movimentacaoService.criarDespesa(transferencia.getValor(), transferencia.getContaOrigem(), TipoTransacaoEnum.TRANSFERENCIA, transferenciaSalva);
+        movimentacaoService.criarReceita(transferencia.getValor(), transferencia.getContaDestino(), TipoTransacaoEnum.TRANSFERENCIA, transferenciaSalva);
     }
 
     /**
@@ -87,10 +88,10 @@ public class TransferenciaService {
         transferenciaEstorno.setContaDestino(transferencia.getContaOrigem());
         transferenciaEstorno.setExecutada(true);
 
-        transferenciaRepository.save(transferenciaEstorno);
+        Transferencia transferenciaSalva = transferenciaRepository.save(transferenciaEstorno);
 
-        movimentacaoService.criarDespesa(transferenciaEstorno.getValor(), transferenciaEstorno.getContaOrigem());
-        movimentacaoService.criarReceita(transferenciaEstorno.getValor(), transferenciaEstorno.getContaDestino());
+        movimentacaoService.criarDespesa(transferenciaEstorno.getValor(), transferenciaEstorno.getContaOrigem(), TipoTransacaoEnum.TRANSFERENCIA, transferenciaSalva);
+        movimentacaoService.criarReceita(transferenciaEstorno.getValor(), transferenciaEstorno.getContaDestino(), TipoTransacaoEnum.TRANSFERENCIA, transferenciaSalva);
     }
 
     /**
