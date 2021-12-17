@@ -6,9 +6,11 @@ import lombok.Getter;
 public enum TipoTransacaoEnum {
 
     SAQUE(1, "SAQUE"),
-    DEPOSITO(2, "DEPOSITO"),
-    TRANSFERENCIA(3, "TRANSFERENCIA"),
-    INVESTIMENTO(4, "INVESTIMENTO");
+    DEPOSITO(2, "DEPÓSITO"),
+    TRANSFERENCIA(3, "TRANSFERÊNCIA"),
+    INVESTIMENTO(4, "INVESTIMENTO"),
+    SALARIO(5, "SALÁRIO"),
+    ESTORNO(6, "ESTORNO");
 
     private Integer codigo;
     private String descricao;

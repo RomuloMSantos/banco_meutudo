@@ -88,8 +88,8 @@ public class TransferenciaService {
 
         Transferencia transferenciaSalva = transferenciaRepository.save(transferenciaEstorno);
 
-        movimentacaoService.criarDespesa(transferenciaEstorno.getValor(), transferenciaEstorno.getContaOrigem(), TipoTransacaoEnum.TRANSFERENCIA, transferenciaSalva);
-        movimentacaoService.criarReceita(transferenciaEstorno.getValor(), transferenciaEstorno.getContaDestino(), TipoTransacaoEnum.TRANSFERENCIA, transferenciaSalva);
+        movimentacaoService.criarDespesa(transferenciaEstorno.getValor(), transferenciaEstorno.getContaOrigem(), TipoTransacaoEnum.ESTORNO, transferenciaSalva);
+        movimentacaoService.criarReceita(transferenciaEstorno.getValor(), transferenciaEstorno.getContaDestino(), TipoTransacaoEnum.ESTORNO, transferenciaSalva);
     }
 
     /**
