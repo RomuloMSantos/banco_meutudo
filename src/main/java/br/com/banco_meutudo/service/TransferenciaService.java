@@ -18,6 +18,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,7 +98,10 @@ public class TransferenciaService {
      * @param transferenciaFuturaDto Dados de uma transferência comum, quantidade de parcelas e data da transferência.
      */
     @Transactional
-    public void criarFutura(TransferenciaFuturaDto transferenciaFuturaDto) {
+    public List<TransferenciaFuturaRetornoDto> criarFutura(TransferenciaFuturaDto transferenciaFuturaDto) {
+
+        validarTransferenciaFutura(transferenciaFuturaDto);
+
         Conta contaOrigem = contaService.findById(transferenciaFuturaDto.getIdContaOrigem()).orElseThrow(() -> new ContaOrigemNaoEncontradaException());
         Conta contaDestino = contaService.findById(transferenciaFuturaDto.getIdContaDestino()).orElseThrow(() -> new ContaDestinoNaoEncontradaException());
 
@@ -110,6 +114,8 @@ public class TransferenciaService {
         BigDecimal totalParcelado = valorParcelado.multiply(BigDecimal.valueOf(transferenciaFuturaDto.getQuantidadeParcelas()));
 
         boolean deveAlterarValorPrimeiraParcela = valorTotal.compareTo(totalParcelado) == 1;
+
+        List<Transferencia> listaTransferencias = new ArrayList<>();
 
         for(int parcela = 0; parcela < transferenciaFuturaDto.getQuantidadeParcelas(); parcela++) {
             BigDecimal valor = valorParcelado;
@@ -125,8 +131,11 @@ public class TransferenciaService {
             transferencia.setValor(valor.doubleValue());
             transferencia.setContaOrigem(contaOrigem);
             transferencia.setContaDestino(contaDestino);
-            transferenciaRepository.save(transferencia);
+            listaTransferencias.add(transferenciaRepository.save(transferencia));
         }
+
+        return listaTransferencias.stream().map(TransferenciaFuturaRetornoDto::valueOf)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -163,7 +172,7 @@ public class TransferenciaService {
     }
 
     /**
-     * Método responsável por validar se é valido estornar uma transferência.
+     * Método responsável por validar se pode estornar uma transferência.
      * @param transferenciaEstornada Transferência que será estornada e deve ser validada.
      */
     private void validarEstornoTransferencia(Transferencia transferenciaEstornada) {
@@ -177,6 +186,15 @@ public class TransferenciaService {
             throw new TransferenciaJaEstornadaException();
 
         validarTransferencia(new TransferenciaDto(transferenciaEstornada.getValor(), transferenciaEstornada.getContaDestino().getId(), transferenciaEstornada.getContaOrigem().getId() ));
+    }
+
+    /**
+     * Método responsável por validar uma transferÊncia futura.
+     * @param transferenciaFuturaDto Dados da transferência que será validada.
+     */
+    private void validarTransferenciaFutura(TransferenciaFuturaDto transferenciaFuturaDto) {
+        if (transferenciaFuturaDto.getIdContaOrigem() == transferenciaFuturaDto.getIdContaDestino())
+            throw new ContaOrigemIgualDestinoException();
     }
 
 }

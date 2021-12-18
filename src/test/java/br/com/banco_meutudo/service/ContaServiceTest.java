@@ -170,8 +170,6 @@ public class ContaServiceTest {
     @Test
     public void deveRetornarListaTransferenciaFuturaVazia() {
         Mockito.when(contaRepository.findById(1L)).thenReturn(Optional.of(buildContaId1()));
-
-        Mockito.when(contaRepository.findById(1L)).thenReturn(Optional.of(buildContaId1()));
         Mockito.when(transferenciaService.getFuturasByConta(1L)).thenReturn(new ArrayList<TransferenciaFuturaRetornoDto>());
         List<TransferenciaFuturaRetornoDto> listaTransferenciasRetorno = contaService.getTransferenciasFuturasById(1L);
 

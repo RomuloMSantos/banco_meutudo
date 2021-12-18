@@ -43,7 +43,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
         List<String> retorno = new ArrayList<>();
         listaErros.forEach(fieldError -> retorno.add(fieldError.getDefaultMessage()));
 
-        return handleExceptionInternal(ex, retorno, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
+        return handleExceptionInternal(ex, retorno, new HttpHeaders(), HttpStatus.BAD_REQUEST,
                 request);
     }
 
