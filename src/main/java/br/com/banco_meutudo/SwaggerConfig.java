@@ -22,7 +22,6 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(Predicate.not(PathSelectors.regex("/error.*")))
                 .build()
-                .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo());
     }
 

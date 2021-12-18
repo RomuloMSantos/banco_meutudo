@@ -30,10 +30,6 @@ public class ContaController {
     private ContaService contaService;
 
     @ApiOperation(value = "Retorna o saldo de uma conta.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Retorna o saldo da conta"),
-            @ApiResponse(code = 500, message = "Erro interno"),
-    })
     @GetMapping("/{id}/saldo")
     public ResponseEntity<Double> getSaldoById(@PathVariable @Min(value = 1, message = "Id inválido!") long id) {
         return new ResponseEntity<>(contaService.getSaldoById(id), HttpStatus.OK);
