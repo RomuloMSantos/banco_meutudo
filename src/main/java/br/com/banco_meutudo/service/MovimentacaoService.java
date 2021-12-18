@@ -9,8 +9,8 @@ import br.com.banco_meutudo.model.Transferencia;
 import br.com.banco_meutudo.repository.MovimentacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service responsável pelas operações com Movimentação.
@@ -27,6 +27,7 @@ public class MovimentacaoService {
      * @param idConta Id que será consultado
      * @return Somatorio de todas as movimentações da conta.
      */
+    @Transactional(isolation = Isolation.SERIALIZABLE, readOnly = true)
     public double getSomatorioByConta(long idConta) {
         return movimentacaoRepository.getSomatorioByConta(idConta);
     }

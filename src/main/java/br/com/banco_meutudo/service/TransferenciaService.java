@@ -11,8 +11,8 @@ import br.com.banco_meutudo.model.Transferencia;
 import br.com.banco_meutudo.repository.TransferenciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -42,8 +42,8 @@ public class TransferenciaService {
      */
     @Transactional
     public void criar(TransferenciaDto transferenciaDto) {
-        Conta contaOrigem = contaService.findById(transferenciaDto.getIdContaOrigem()).orElseThrow(() -> new ContaOrigemNaoEncontradaException());
-        Conta contaDestino = contaService.findById(transferenciaDto.getIdContaDestino()).orElseThrow(() -> new ContaDestinoNaoEncontradaException());
+        Conta contaOrigem = contaService.findById(transferenciaDto.getIdContaOrigem()).orElseThrow(ContaOrigemNaoEncontradaException::new);
+        Conta contaDestino = contaService.findById(transferenciaDto.getIdContaDestino()).orElseThrow(ContaDestinoNaoEncontradaException::new);
 
         validarTransferencia(transferenciaDto);
 
